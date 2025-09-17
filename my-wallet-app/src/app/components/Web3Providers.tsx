@@ -13,15 +13,17 @@ const projectId = 'ae2ba068cc4af264e3b0ec09e2bd054f'
 
 // ✅ تعریف کانفیگ wagmi (نسخه 2)
 const config = createConfig({
-  chains: [bscTestnet],              // حتماً آرایه
-  transports: {
-    [bscTestnet.id]: http('https://data-seed-prebsc-1-s1.binance.org:8545/'), // یا RPC دلخواه
-  },
-  connectors: [
-    injected({ name: 'MetaMask' }),
-    walletConnect({ projectId, showQrModal: true }),
-  ],
-})
+    autoConnect: true,
+    chains: [bscTestnet],
+    transports: {
+      [bscTestnet.id]: http('https://data-seed-prebsc-1-s1.binance.org:8545/'),
+    },
+    connectors: [
+      injected({ name: 'MetaMask' }),
+      walletConnect({ projectId, showQrModal: true }),
+    ],
+  })
+  
 
 const queryClient = new QueryClient()
 
