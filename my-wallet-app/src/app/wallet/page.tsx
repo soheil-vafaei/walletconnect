@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import Web3Providers from './components/Web3Providers'
+import Web3Providers from '../components/Web3Providers'
 import { useAccount, useDisconnect } from 'wagmi'
 
 export default function WalletPage() {
