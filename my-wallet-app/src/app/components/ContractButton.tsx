@@ -221,47 +221,64 @@ export default function ContractButton() {
   }
 
   // Helper: swap handler
-  const handleSwap = async () => {
-    setErrorMsg(null)
-    if (!isConnected || !walletAddress) {
-      setErrorMsg('لطفاً کیف‌پول را وصل کنید.')
+ 
+const handleSwap = async () => {
+  try {
+    if (!isConnected || !walletClient || !walletAddress) {
+      console.error('❌ کیف‌پول وصل نیست یا walletClient آماده نیست')
       return
     }
+
     if (!amountIn || isNaN(Number(amountIn))) {
-      setErrorMsg('مقدار amountIn معتبر نیست.')
+      console.error('❌ مقدار amountIn معتبر نیست')
       return
     }
+
     if (!amountOutMin || isNaN(Number(amountOutMin))) {
-      setErrorMsg('مقدار amountOutMin معتبر نیست.')
+      console.error('❌ مقدار amountOutMin معتبر نیست')
       return
     }
 
-    try {
-      console.log('🔵 handleSwap: start')
-      const amountInWei = ethers.parseUnits(amountIn, 18)
-      const amountOutMinWei = ethers.parseUnits(amountOutMin, 18)
-      const deadline = Math.floor(Date.now() / 1000) + 60 * 10 // +10 minutes
-      const path = [tokenIn, tokenOut]
-      const to = walletAddress
+    console.log('🔵 handleSwap: شروع فرآیند swap')
 
-      const args = [amountInWei, amountOutMinWei, path, to, BigInt(deadline)]
-      console.log('🔵 handleSwap: args prepared:', {
-        amountInWei: amountInWei.toString(),
-        amountOutMinWei: amountOutMinWei.toString(),
-        path,
-        to,
-        deadline
-      })
+    const provider = new ethers.BrowserProvider(walletClient)
+    const signer   = await provider.getSigner()
+    const signerAddr = await signer.getAddress()
+    console.log('✅ Signer آماده است:', signerAddr)
 
-      // call swapExactTokensForTokens(amountIn, amountOutMin, path, to, deadline)
-      // @ts-ignore
-      const tx = await swapWrite?.({ args })
-      console.log('🔵 handleSwap: swap tx submitted:', tx)
-    } catch (err: any) {
-      console.error('❌ handleSwap error:', err)
-      setErrorMsg(err?.message ?? String(err))
-    }
+    const router = new ethers.Contract(routerAddress, routerAbi, signer)
+
+    const amountInWei    = ethers.parseUnits(amountIn, 18)
+    const amountOutMinWei = ethers.parseUnits(amountOutMin, 18)
+    const path           = [tokenIn, tokenOut]
+    const to             = signerAddr
+    const deadline       = BigInt(Math.floor(Date.now() / 1000) + 60 * 10) // 10 دقیقه بعد
+
+    console.log('🔵 handleSwap: args آماده شدند', {
+      amountInWei: amountInWei.toString(),
+      amountOutMinWei: amountOutMinWei.toString(),
+      path,
+      to,
+      deadline: deadline.toString()
+    })
+
+    // ارسال تراکنش
+    const tx = await router.swapExactTokensForTokens(
+      amountInWei,
+      amountOutMinWei,
+      path,
+      to,
+      deadline
+    )
+    console.log('🔵 handleSwap: تراکنش ارسال شد', tx.hash)
+
+    const receipt = await tx.wait()
+    console.log('✅ handleSwap: تراکنش تایید شد در بلاک', receipt.blockNumber)
+
+  } catch (err: any) {
+    console.error('❌ handleSwap error:', err.message || err)
   }
+}
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-6 text-white">
