@@ -3,6 +3,7 @@
 import React from 'react'
 import Web3Providers from './components/Web3Providers'
 import { useAccount, useDisconnect, useBalance } from 'wagmi'
+import ContractButton from './components/ContractButton'
 
 export default function WalletPage() {
   return (
@@ -56,7 +57,9 @@ function Main() {
             >
               قطع اتصال
             </button>
+            <ContractButton />
           </>
+          
         )}
       </div>
     </div>
