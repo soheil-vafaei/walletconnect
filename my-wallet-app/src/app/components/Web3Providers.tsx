@@ -5,7 +5,7 @@
 import React, { useEffect, useRef } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider, createConfig, http } from 'wagmi'
-import { bscTestnet } from 'wagmi/chains'
+import { bscTestnet , bsc } from 'wagmi/chains'
 import { injected, walletConnect } from 'wagmi/connectors'
 import { createWeb3Modal } from '@web3modal/wagmi/react'
 
@@ -15,6 +15,7 @@ const projectId = 'ae2ba068cc4af264e3b0ec09e2bd054f'
 const config = createConfig({
     autoConnect: true,
     chains: [bscTestnet],
+    // chains: [bsc],
     transports: {
       [bscTestnet.id]: http('https://data-seed-prebsc-1-s1.binance.org:8545/'),
     },
@@ -36,7 +37,11 @@ export default function Web3Providers({ children }: { children: React.ReactNode 
         wagmiConfig: config,
         projectId,
         chains: [bscTestnet],     // باید آرایه باشه
+        // chains: [bsc],  
         themeMode: 'light',
+        enableOnramp: false,  // مخفی کردن "Buy Crypto"
+        enableSwap: false,   // مخفی کردن "Swap"
+        enableAnalytics: false, // مخفی کردن "Activity"
       })
       created.current = true
     }

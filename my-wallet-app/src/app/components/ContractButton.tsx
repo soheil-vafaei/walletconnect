@@ -281,7 +281,7 @@ const handleSwap = async () => {
 }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-6 text-white">
+    <div className="min-h-screen bg-gray-600 flex flex-col items-center justify-center p-6 text-white">
       <h2 className="text-2xl font-semibold mb-4">Swap UI (BSC Testnet)</h2>
 
       <div className="w-full max-w-md space-y-3">

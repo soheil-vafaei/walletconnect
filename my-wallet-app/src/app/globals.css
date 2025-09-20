@@ -24,3 +24,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* کلاس سفارشی ما */
+.my-wallet-btn {
+  /* ارتفاع را زیاد و عرض را کمتر می‌کنیم */
+  --w3m-font-size: 8px;       /* اندازه فونت داخلی */
+  height: 60px !important;     /* ارتفاع دلخواه */
+  width: 180px !important;     /* عرض دلخواه */
+  padding: 0 !important;       /* پدینگ پیش‌فرض را خنثی کن اگر خواستی */
+  border-radius: 30px;         /* گوشه‌ها */
+}
+

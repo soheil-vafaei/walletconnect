@@ -4,6 +4,7 @@ import React from 'react'
 import Web3Providers from './components/Web3Providers'
 import { useAccount, useDisconnect, useBalance } from 'wagmi'
 import ContractButton from './components/ContractButton'
+import "./globals.css";
 
 export default function WalletPage() {
   return (
@@ -30,37 +31,19 @@ function Main() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="p-8 rounded-2xl shadow-2xl bg-white text-center">
-        {!isConnected ? (
-          <>
-            <h1 className="text-2xl font-semibold mb-4">اتصال کیف‌پول</h1>
-            <w3m-button />
-            <p className="mt-3 text-sm text-gray-500">
-              کیف‌پول خود را با WalletConnect یا MetaMask وصل کنید.
-            </p>
-          </>
-        ) : (
-          <>
-            <h2 className="text-lg font-medium mb-2">متصل شد</h2>
-            <p className="mb-2">
-              آدرس: <span className="font-mono">{shorten(address)}</span>
-            </p>
-            {/* ✅ نمایش موجودی */}
-            <p className="mb-4">
-              موجودی:{' '}
-              {isLoading
-                ? 'در حال دریافت...'
-                : `${balance?.formatted} ${balance?.symbol}`}
-            </p>
-            <button
-              className="px-4 py-2 rounded-lg border hover:bg-gray-100"
-              onClick={() => disconnect()}
-            >
-              قطع اتصال
-            </button>
+
+      <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
+      <w3m-button network="hide" />
+    </div>
+
             <ContractButton />
-          </>
-          
-        )}
+      
       </div>
     </div>
   )
